@@ -62,7 +62,6 @@ suite "Grade School":
       check school.roster() == @["Blair", "James", "Paul"]
 
 #[
-
   test "students are sorted by grades in the roster":
     var school = School()
     school.addStudent("Jim", 3)
