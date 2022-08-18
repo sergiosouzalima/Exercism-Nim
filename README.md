@@ -68,4 +68,4 @@ type
 
 ### Based on
 
-A pairing session with Phil Battos at gSchool# Exercism-nim
+A pairing session with Phil Battos at gSchool
