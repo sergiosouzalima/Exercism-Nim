@@ -18,7 +18,8 @@ func roster*(self: School): seq[string] =
   return seqOrdered.mapIt(it.name)
 
 func grade*(self: School, grade: int): seq[string] =
-  return self.students.mapIt(it.name)
+  var seqFiltered = self.students.filterIt(it.grade == grade)
+  return seqFiltered.mapIt(it.name)
 
 func addStudent*(self: var School, name: string, grade: int) =
   var exists = self.students.anyIt(it.name == name)
