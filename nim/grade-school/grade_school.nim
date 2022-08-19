@@ -12,6 +12,9 @@ func cmpByGradeName(x, y: Student): int =
   elif x.orderedBy == y.orderedBy: 0
   else: 1
 
+#func getStudentsOrdered(self: var seq[Student]): seq[Student] =
+#  return self.sort(cmpByGradeName)
+
 func roster*(self: School): seq[string] =
   var seqOrdered = self.students
   seqOrdered.sort(cmpByGradeName)
