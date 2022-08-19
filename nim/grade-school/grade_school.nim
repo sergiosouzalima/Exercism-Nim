@@ -12,16 +12,16 @@ func cmpByGradeName(x, y: Student): int =
   elif x.orderedBy == y.orderedBy: 0
   else: 1
 
-#func getStudentsOrdered(self: var seq[Student]): seq[Student] =
-#  return self.sort(cmpByGradeName)
+func getStudentsOrdered(self: School): seq[Student] =
+  var seqStudents = self.students
+  seqStudents.sort(cmpByGradeName)
+  return seqStudents
 
 func roster*(self: School): seq[string] =
-  var seqOrdered = self.students
-  seqOrdered.sort(cmpByGradeName)
-  return seqOrdered.mapIt(it.name)
+  return self.getStudentsOrdered.mapIt(it.name)
 
 func grade*(self: School, grade: int): seq[string] =
-  var seqFiltered = self.students.filterIt(it.grade == grade)
+  var seqFiltered = self.getStudentsOrdered.filterIt(it.grade == grade)
   return seqFiltered.mapIt(it.name)
 
 func addStudent*(self: var School, name: string, grade: int) =
@@ -29,9 +29,3 @@ func addStudent*(self: var School, name: string, grade: int) =
   if exists: raise newException(ValueError, "Student already exists")
   var student = Student((name: name, grade: grade, orderedBy: $(grade,2) & name))
   self.students.add(student)
-
-
-## sorted sequence
-## https://nim-lang.org/docs/algorithm.html
-## https://nim-lang.org/1.4.4/algorithm.html
-## https://dev.to/sjuny/sort-string-in-nim-nm2
