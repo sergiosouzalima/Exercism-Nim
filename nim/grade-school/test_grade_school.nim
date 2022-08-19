@@ -61,7 +61,7 @@ suite "Grade School":
     test "student not added to multiple grades in the roster":
       check school.roster() == @["Blair", "James", "Paul"]
 
-#[
+
   test "students are sorted by grades in the roster":
     var school = School()
     school.addStudent("Jim", 3)
@@ -87,7 +87,7 @@ suite "Grade School":
     school.addStudent("Charlie", 1)
     check school.roster() == @["Anna", "Barb", "Charlie", "Alex", "Peter",
                                "Zoe", "Jim"]
-
+#[
   test "grade is empty if no students in the roster":
     var school = School()
     check school.grade(1).len == 0
