@@ -87,11 +87,11 @@ suite "Grade School":
     school.addStudent("Charlie", 1)
     check school.roster() == @["Anna", "Barb", "Charlie", "Alex", "Peter",
                                "Zoe", "Jim"]
-#[
+
   test "grade is empty if no students in the roster":
     var school = School()
     check school.grade(1).len == 0
-
+#[
   test "grade is empty if no students in that grade":
     var school = School()
     school.addStudent("Peter", 2)
