@@ -1,8 +1,6 @@
 import tables
 import strutils
 
-
-
 func setTableNewLetters(): Table[char, int] =
   #[
     1 point: "A", "E", "I", "O", "U", "L", "N", "R", "S", "T",
