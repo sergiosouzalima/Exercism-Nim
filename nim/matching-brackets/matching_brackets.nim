@@ -1,34 +1,76 @@
+import tables
+import std/sequtils
 
 func isEven(number: int): bool =
   return (number.abs.mod 2) == 0
 
-proc isPaired*(stringOfbrackets: string): bool =
-  ##var brackets: int = 0
-  ##var curlies: int = 0
-  ##var parens: int = 0
-  var brackets: string = ""
-  var curlies: string = ""
-  var parens: string = ""
+func clean(brackets, initialBrackets, endBrackets: string):string =
+  for e in brackets:
+    if e in (initialBrackets&endBrackets):
+      result = result & e
 
-  if stringOfbrackets == "": return true
+func paredBracket(carac: char):char =
+  var tableInitialBracket: Table[char, char]
+  tableInitialBracket['}'] = '{'
+  tableInitialBracket[']'] = '['
+  tableInitialBracket[')'] = '('
+  return tableInitialBracket[carac]
 
-  for e in stringOfbrackets:
-    if e == '[':
-      brackets = "OPEN"
-    if e == '{':
-      curlies = "OPEN"
-    if e == '(':
-      parens = "OPEN"
-    if e == ']':
-      if brackets == "CLOSED": brackets = "OPEN"
-      else: brackets = "CLOSED"
-    if e == '}':
-      if curlies == "CLOSED": curlies = "OPEN"
-      else: curlies = "CLOSED"
-    if e == ')':
-      if parens == "CLOSED": parens = "OPEN"
-      else: parens = "CLOSED"
+func exists(cleanBrackets: string, brackets: string):bool =
+  var counter: int = 0
+  for e in cleanBrackets:
+    if e in brackets: counter += 1
+  return counter > 0
 
-  return (brackets == "CLOSED" or brackets == "") and
-        (curlies == "CLOSED" or curlies == "") and
-        (parens == "CLOSED" or parens == "")
+proc isPaired*(brackets: string): bool =
+  let initialBrackets = "{[("
+  let endBrackets = "}])"
+  var cleanBrackets: string = ""
+  var seqBrackets: seq[char]
+  var bracketToPare: char
+  var bracketIndex, bracketIndexToDelete: int
+  var pairedBracketFound, inexpectedBracketFound: bool
+  var endBracketFound: bool
+  var curChar: char
+
+  cleanBrackets = brackets.clean(initialBrackets, endBrackets) # keep only brackets in cleanBrackets
+
+  if cleanBrackets.len == 0: return true # return true, if no brackets detected
+
+  if not cleanBrackets.len.isEven: return false # return false if cleanBrackets is unbalanced
+
+  if not cleanBrackets.exists initialBrackets: return false # must be at least one initial bracket
+
+  if not cleanBrackets.exists endBrackets: return false # must be at least one end bracket
+
+  seqBrackets = cleanBrackets.toSeq
+
+  pairedBracketFound = true
+  while seqBrackets.len > 0 and pairedBracketFound:
+    bracketIndex = 0
+    endBracketFound = false
+    ## Looking for an end bracket...
+    while not endBracketFound and bracketIndex <= seqBrackets.len:
+      curChar = seqBrackets[bracketIndex]
+      endBracketFound = curChar in endBrackets
+      if endBracketFound:
+        bracketToPare = paredBracket(curChar)
+        bracketIndexToDelete = bracketIndex
+      else:
+        bracketIndex += 1
+
+    if not endBracketFound: return false
+
+    ## Looking for an initial bracket...
+    pairedBracketFound = false
+    inexpectedBracketFound = false
+    while not pairedBracketFound and bracketIndex > 0 and not inexpectedBracketFound:
+      bracketIndex -= 1
+      curChar = seqBrackets[bracketIndex]
+      pairedBracketFound = curChar == bracketToPare
+      inexpectedBracketFound = curChar in initialBrackets and not pairedBracketFound
+      if pairedBracketFound:
+        seqBrackets.delete(bracketIndexToDelete)
+        seqBrackets.delete(bracketIndex)
+
+  return seqBrackets.len == 0
