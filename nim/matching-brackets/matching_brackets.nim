@@ -39,9 +39,9 @@ proc isPaired*(brackets: string): bool =
 
   if not cleanBrackets.len.isEven: return false # return false if cleanBrackets is unbalanced
 
-  if not cleanBrackets.exists initialBrackets: return false # must be at least one initial bracket
+  if not cleanBrackets.exists initialBrackets: return false # there must be at least one initial bracket
 
-  if not cleanBrackets.exists endBrackets: return false # must be at least one end bracket
+  if not cleanBrackets.exists endBrackets: return false # there must be at least one end bracket
 
   seqBrackets = cleanBrackets.toSeq
 
