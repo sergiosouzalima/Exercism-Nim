@@ -68,7 +68,7 @@ proc isPaired*(brackets: string): bool =
       bracketIndex -= 1
       curChar = seqBrackets[bracketIndex]
       pairedBracketFound = curChar == bracketToPare
-      inexpectedBracketFound = curChar in initialBrackets and not pairedBracketFound
+      inexpectedBracketFound = curChar in initialBrackets
       if pairedBracketFound:
         seqBrackets.delete(bracketIndexToDelete)
         seqBrackets.delete(bracketIndex)
